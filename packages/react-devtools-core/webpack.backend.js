@@ -1,10 +1,10 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const Webpack = require('webpack');
 const {
   GITHUB_URL,
   getVersionString,
 } = require('react-devtools-extensions/utils');
-const {resolveFeatureFlags} = require('react-devtools-shared/buildUtils');
+const { resolveFeatureFlags } = require('react-devtools-shared/buildUtils');
 
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
@@ -28,7 +28,7 @@ const featureFlagTarget = process.env.FEATURE_FLAG_TARGET || 'core/backend-oss';
 
 // This targets RN/Hermes.
 process.env.BABEL_CONFIG_ADDITIONAL_TARGETS = JSON.stringify({
-  ie: '11',
+  ie: '10',
 });
 
 module.exports = {
@@ -45,6 +45,7 @@ module.exports = {
     library: 'ReactDevToolsBackend',
     libraryTarget: 'umd',
   },
+  target: ['web', 'es5'],
   resolve: {
     alias: {
       react: resolve(builtModulesDir, 'react'),
@@ -92,6 +93,9 @@ module.exports = {
             'react-devtools-shared',
             'babel.config.js',
           ),
+          presets: [
+            '@babel/preset-env', // Add this preset for ES5 support
+          ],
         },
       },
     ],

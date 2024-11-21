@@ -10,6 +10,7 @@
     "react-dom-15": "npm:react-dom@^15"
   },
   "dependencies": {
+    "queue-microtask": "^1.2.3",
     "@babel/parser": "^7.12.5",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-flow": "^7.10.4",

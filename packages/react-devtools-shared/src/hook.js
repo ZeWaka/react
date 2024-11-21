@@ -191,13 +191,13 @@ export function installHook(
         setTimeout(function () {
           throw new Error(
             'React is running in production mode, but dead code ' +
-              'elimination has not been applied. Read how to correctly ' +
-              'configure React for production: ' +
-              'https://react.dev/link/perf-use-production-build',
+            'elimination has not been applied. Read how to correctly ' +
+            'configure React for production: ' +
+            'https://react.dev/link/perf-use-production-build',
           );
         });
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   // TODO: isProfiling should be stateful, and we should update it once profiling is finished
@@ -227,7 +227,7 @@ export function installHook(
     );
     if (rendererInterface != null) {
       hook.rendererInterfaces.set(id, rendererInterface);
-      hook.emit('renderer-attached', {id, rendererInterface});
+      hook.emit('renderer-attached', { id, rendererInterface });
     } else {
       hook.hasUnsupportedRendererAttached = true;
       hook.emit('unsupported-renderer-version');
@@ -381,7 +381,7 @@ export function installHook(
         }
       };
 
-      targetConsole[method] = overrideMethod;
+      //targetConsole[method] = overrideMethod;
       unpatchConsoleCallbacks.push(() => {
         targetConsole[method] = originalMethod;
       });
@@ -399,6 +399,9 @@ export function installHook(
   const moduleRanges: Array<[StackFrameString, StackFrameString]> = [];
 
   function getTopStackFrameString(error: Error): StackFrameString | null {
+    if (error.stack == null) {
+      return null;
+    }
     const frames = error.stack.split('\n');
     const frame = frames.length > 1 ? frames[1] : null;
     return frame;
@@ -475,7 +478,7 @@ export function installHook(
         // We don't handle the edge case of stacks for more than one (e.g. interleaved renderers?)
         // eslint-disable-next-line no-for-of-loops/no-for-of-loops
         for (const rendererInterface of hook.rendererInterfaces.values()) {
-          const {onErrorOrWarning, getComponentStack} = rendererInterface;
+          const { onErrorOrWarning, getComponentStack } = rendererInterface;
           try {
             if (shouldShowInlineWarningsAndErrors) {
               // patch() is called by two places: (1) the hook and (2) the renderer backend.
@@ -500,7 +503,7 @@ export function installHook(
               const topFrame = Error('react-stack-top-frame');
               const match = getComponentStack(topFrame);
               if (match !== null) {
-                const {enableOwnerStacks, componentStack} = match;
+                const { enableOwnerStacks, componentStack } = match;
                 // Empty string means we have a match but no component stack.
                 // We don't need to look in other renderers but we also don't add anything.
                 if (componentStack !== '') {
@@ -531,8 +534,8 @@ export function installHook(
                   fakeError.stack =
                     __IS_CHROME__ || __IS_EDGE__ || __IS_NATIVE__
                       ? (enableOwnerStacks
-                          ? 'Error Stack:'
-                          : 'Error Component Stack:') + componentStack
+                        ? 'Error Stack:'
+                        : 'Error Component Stack:') + componentStack
                       : componentStack;
 
                   if (alreadyHasComponentStack) {
@@ -609,16 +612,16 @@ export function installHook(
         }
       };
 
-      targetConsole[method] = overrideMethod;
+      //targetConsole[method] = overrideMethod;
     }
   }
 
   // TODO: More meaningful names for "rendererInterfaces" and "renderers".
-  const fiberRoots: {[RendererID]: Set<mixed>} = {};
-  const rendererInterfaces = new Map<RendererID, RendererInterface>();
-  const listeners: {[string]: Array<Handler>} = {};
-  const renderers = new Map<RendererID, ReactRenderer>();
-  const backends = new Map<string, DevToolsBackend>();
+  const fiberRoots: { [RendererID]: Set<mixed> } = {};
+  const rendererInterfaces = new Map < RendererID, RendererInterface> ();
+  const listeners: { [string]: Array<Handler> } = {};
+  const renderers = new Map < RendererID, ReactRenderer> ();
+  const backends = new Map < string, DevToolsBackend> ();
 
   const hook: DevToolsHook = {
     rendererInterfaces,

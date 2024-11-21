@@ -11,7 +11,7 @@ import {
   importFromChromeTimeline,
   Flamechart as SpeedscopeFlamechart,
 } from '@elg/speedscope';
-import type {TimelineEvent} from '@elg/speedscope';
+import type { TimelineEvent } from '@elg/speedscope';
 import type {
   ErrorStackFrame,
   BatchUID,
@@ -35,7 +35,7 @@ import {
   SNAPSHOT_MAX_HEIGHT,
 } from '../constants';
 import InvalidProfileError from './InvalidProfileError';
-import {getBatchRange} from '../utils/getBatchRange';
+import { getBatchRange } from '../utils/getBatchRange';
 import ErrorStackParser from 'error-stack-parser';
 
 type MeasureStackElement = {
@@ -125,7 +125,7 @@ let profilerVersion = null;
 
 function getLastType(stack: $PropertyType<ProcessorState, 'measureStack'>) {
   if (stack.length > 0) {
-    const {type} = stack[stack.length - 1];
+    const { type } = stack[stack.length - 1];
     return type;
   }
   return null;
@@ -133,7 +133,7 @@ function getLastType(stack: $PropertyType<ProcessorState, 'measureStack'>) {
 
 function getDepth(stack: $PropertyType<ProcessorState, 'measureStack'>) {
   if (stack.length > 0) {
-    const {depth, type} = stack[stack.length - 1];
+    const { depth, type } = stack[stack.length - 1];
     return type === 'render-idle' ? depth : depth + 1;
   }
   return 0;
@@ -146,7 +146,7 @@ function markWorkStarted(
   currentProfilerData: TimelineData,
   state: ProcessorState,
 ) {
-  const {batchUID, measureStack} = state;
+  const { batchUID, measureStack } = state;
   const depth = getDepth(measureStack);
 
   const measure: ReactMeasure = {
@@ -158,7 +158,7 @@ function markWorkStarted(
     duration: 0,
   };
 
-  state.measureStack.push({depth, measure, startTime, type});
+  state.measureStack.push({ depth, measure, startTime, type });
 
   // This array is pre-initialized when the batchUID is generated.
   const measures = currentProfilerData.batchUIDToMeasuresMap.get(batchUID);
@@ -173,7 +173,7 @@ function markWorkStarted(
     ((currentProfilerData.laneToReactMeasureMap.get(
       lane,
     ): any): ReactMeasure[]).push(measure);
-  });
+});
 }
 
 function markWorkCompleted(
@@ -203,7 +203,7 @@ function markWorkCompleted(
   }
 
   // $FlowFixMe[incompatible-use]
-  const {measure, startTime} = stack.pop();
+  const { measure, startTime } = stack.pop();
   if (!measure) {
     console.error('Could not find matching measure for type "%s".', type);
   }
@@ -392,10 +392,10 @@ function processResourceSendRequest(
   const data = event.args.data;
   const requestId = data.requestId;
 
-  const availableDepths = new Array<boolean>(
+  const availableDepths = new Array < boolean > (
     state.requestIdToNetworkMeasureMap.size + 1,
   ).fill(true);
-  state.requestIdToNetworkMeasureMap.forEach(({depth}) => {
+  state.requestIdToNetworkMeasureMap.forEach(({ depth }) => {
     availableDepths[depth] = false;
   });
 
@@ -433,7 +433,7 @@ function processTimelineEvent(
   /** Intermediate processor state. May be mutated. */
   state: ProcessorState,
 ) {
-  const {cat, name, ts, ph} = event;
+  const { cat, name, ts, ph } = event;
 
   const startTime = (ts - currentProfilerData.startTime) / 1000;
 
@@ -519,7 +519,7 @@ function processTimelineEvent(
 
         // If this is a nested update, make a note of it.
         // Once we're done processing events, we'll check to see if it was a long update and warn about it.
-        if (state.measureStack.find(({type}) => type === 'commit')) {
+        if (state.measureStack.find(({ type }) => type === 'commit')) {
           state.potentialLongNestedUpdate = forceUpdateEvent;
         }
 
@@ -537,7 +537,7 @@ function processTimelineEvent(
 
         // If this is a nested update, make a note of it.
         // Once we're done processing events, we'll check to see if it was a long update and warn about it.
-        if (state.measureStack.find(({type}) => type === 'commit')) {
+        if (state.measureStack.find(({ type }) => type === 'commit')) {
           state.potentialLongNestedUpdate = stateUpdateEvent;
         }
 
@@ -558,10 +558,10 @@ function processTimelineEvent(
           .split('-');
         const lanes = getLanesFromTransportDecimalBitmask(laneBitmaskString);
 
-        const availableDepths = new Array<boolean>(
+        const availableDepths = new Array < boolean > (
           state.unresolvedSuspenseEvents.size + 1,
         ).fill(true);
-        state.unresolvedSuspenseEvents.forEach(({depth}) => {
+        state.unresolvedSuspenseEvents.forEach(({ depth }) => {
           availableDepths[depth] = false;
         });
 
@@ -980,7 +980,7 @@ function preprocessFlamechart(rawData: TimelineEvent[]): Flamechart {
         start,
         end,
         node: {
-          frame: {name, file, line, col},
+          frame: { name, file, line, col },
         },
       }) => ({
         name,
@@ -999,6 +999,7 @@ function preprocessFlamechart(rawData: TimelineEvent[]): Flamechart {
 function parseStackFrame(stackFrame: string): ErrorStackFrame | null {
   const error = new Error();
   error.stack = stackFrame;
+  return null;
 
   const frames = ErrorStackParser.parse(error);
 
@@ -1092,7 +1093,7 @@ export default async function preprocessData(
       // The easiest way to check for this case is to see if the data contains any scheduled updates or render work.
       throw new InvalidProfileError(
         'No React marks were found in the provided profile.' +
-          ' Please provide profiling data from an React application running in development or profiling mode.',
+        ' Please provide profiling data from an React application running in development or profiling mode.',
       );
     }
 
@@ -1102,7 +1103,7 @@ export default async function preprocessData(
   }
 
   // Validate that all events and measures are complete
-  const {measureStack} = state;
+  const { measureStack } = state;
   if (measureStack.length > 0) {
     console.error('Incomplete events or measures', measureStack);
   }

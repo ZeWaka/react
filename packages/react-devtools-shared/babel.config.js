@@ -19,6 +19,7 @@ function validateVersion(version) {
 module.exports = api => {
   const isTest = api.env('test');
   const targets = {};
+  targets.ie = '11'
   if (isTest) {
     targets.node = 'current';
   } else {
@@ -35,7 +36,7 @@ module.exports = api => {
   }
   const plugins = [
     ['@babel/plugin-transform-flow-strip-types'],
-    ['@babel/plugin-proposal-class-properties', {loose: false}],
+    ['@babel/plugin-proposal-class-properties', { loose: false }],
   ];
   if (process.env.NODE_ENV !== 'production') {
     plugins.push(['@babel/plugin-transform-react-jsx-source']);
@@ -43,7 +44,7 @@ module.exports = api => {
   return {
     plugins,
     presets: [
-      ['@babel/preset-env', {targets}],
+      ['@babel/preset-env', { targets }],
       '@babel/preset-react',
       '@babel/preset-flow',
     ],

@@ -1,10 +1,10 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const Webpack = require('webpack');
 const {
   GITHUB_URL,
   getVersionString,
 } = require('react-devtools-extensions/utils');
-const {resolveFeatureFlags} = require('react-devtools-shared/buildUtils');
+const { resolveFeatureFlags } = require('react-devtools-shared/buildUtils');
 
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
@@ -42,7 +42,7 @@ const babelOptions = {
 module.exports = {
   mode: __DEV__ ? 'development' : 'production',
   devtool: __DEV__ ? 'eval-cheap-module-source-map' : 'source-map',
-  target: 'electron-main',
+  target: ['electron-main', 'es5'],
   entry: {
     standalone: './src/standalone.js',
   },

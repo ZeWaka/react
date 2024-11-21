@@ -7,18 +7,20 @@
  * @flow
  */
 
+import '@babel/polyfill';
+
 import Agent from 'react-devtools-shared/src/backend/agent';
 import Bridge from 'react-devtools-shared/src/bridge';
-import {installHook} from 'react-devtools-shared/src/hook';
-import {initBackend} from 'react-devtools-shared/src/backend';
-import {__DEBUG__} from 'react-devtools-shared/src/constants';
+import { installHook } from 'react-devtools-shared/src/hook';
+import { initBackend } from 'react-devtools-shared/src/backend';
+import { __DEBUG__ } from 'react-devtools-shared/src/constants';
 import setupNativeStyleEditor from 'react-devtools-shared/src/backend/NativeStyleEditor/setupNativeStyleEditor';
 import {
   getDefaultComponentFilters,
   getIsReloadAndProfileSupported,
 } from 'react-devtools-shared/src/utils';
 
-import type {BackendBridge} from 'react-devtools-shared/src/bridge';
+import type { BackendBridge } from 'react-devtools-shared/src/bridge';
 import type {
   ComponentFilter,
   Wall,
@@ -28,7 +30,7 @@ import type {
   DevToolsHookSettings,
   ProfilingSettings,
 } from 'react-devtools-shared/src/backend/types';
-import type {ResolveNativeStyle} from 'react-devtools-shared/src/backend/NativeStyleEditor/setupNativeStyleEditor';
+import type { ResolveNativeStyle } from 'react-devtools-shared/src/backend/NativeStyleEditor/setupNativeStyleEditor';
 
 type ConnectOptions = {
   host?: string,
@@ -147,7 +149,7 @@ export function connectToDevTools(options: ?ConnectOptions) {
             debug('wall.send()', event, payload);
           }
 
-          ws.send(JSON.stringify({event, payload}));
+          ws.send(JSON.stringify({ event, payload }));
         } else {
           if (__DEBUG__) {
             debug(
@@ -216,9 +218,9 @@ export function connectToDevTools(options: ?ConnectOptions) {
         bridge,
         agent,
         ((resolveRNStyle || hook.resolveRNStyle: any): ResolveNativeStyle),
-        nativeStyleEditorValidAttributes ||
-          hook.nativeStyleEditorValidAttributes ||
-          null,
+      nativeStyleEditorValidAttributes ||
+        hook.nativeStyleEditorValidAttributes ||
+        null,
       );
     } else {
       // Otherwise listen to detect if the environment later supports it.

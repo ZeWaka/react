@@ -25,6 +25,7 @@
     "start:standalone": "cross-env NODE_ENV=development webpack --config webpack.standalone.js --watch"
   },
   "dependencies": {
+    "@babel/polyfill": "7.12.1",
     "shell-quote": "^1.6.1",
     "ws": "^7"
   },
