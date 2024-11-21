@@ -3,6 +3,8 @@
 
 ## here
 
+`git clone --depth=1`
+
 root directory:
 ```sh
 yarn
